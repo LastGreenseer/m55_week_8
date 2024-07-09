@@ -27,7 +27,28 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+const deleteBook = async (req, res) => {
+  const { title } = req.body;
+
+  try {
+    const deleted = await Book.destroy({
+      where: { title: title },
+    });
+
+    if (deleted) {
+      res
+        .status(201)
+        .json({ message: `${title} has been deleted successfully` });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(501).json({ message: error.message, error: error });
+  }
+};
+
 module.exports = {
   addBook: addBook,
   getAllBooks: getAllBooks,
+  deleteBook: deleteBook
 };
