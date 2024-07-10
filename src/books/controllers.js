@@ -27,6 +27,26 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+// const getAllByAuthor = async (req, res) => {
+//     const { author } = req.body;
+
+//     try {
+//         const books = await Book.findAll({
+//             where: {author: author},
+//         });
+
+//         if (books.length > 0) {
+//             res.status(201).json({ message: "success", books: books });
+//         }
+//     } 
+// }
+
+// const dynamicBookUpdate = async (req, res) => {
+//   try {
+
+//   }
+// }
+
 const deleteBook = async (req, res) => {
   const { title } = req.body;
 
@@ -35,15 +55,13 @@ const deleteBook = async (req, res) => {
       where: { title: title },
     });
 
-    if (deleted) {
-      res
-        .status(201)
-        .json({ message: `${title} has been deleted successfully` });
-    } else {
-      res.status(404).json({ message: "Book not found" });
-    }
+    if (!deleted) {
+      return res.status(404).json({message : "Book not found"})
+    } 
+
+    res.status(200).json({message: `${title} has been deleted`})
   } catch (error) {
-    res.status(501).json({ message: error.message, error: error });
+     res.status(501).json({ message: error.message, error: error });
   }
 };
 
