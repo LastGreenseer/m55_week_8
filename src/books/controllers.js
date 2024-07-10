@@ -38,14 +38,44 @@ const getAllBooks = async (req, res) => {
 //         if (books.length > 0) {
 //             res.status(201).json({ message: "success", books: books });
 //         }
-//     } 
+//     }
 // }
 
-// const dynamicBookUpdate = async (req, res) => {
-//   try {
+const dynamicUpdate = async (req, res) => {
+  const { title, author, genre } = req.body;
 
-//   }
-// }
+  try {
+    if (!title) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
+    const [oldTitle, newTitle] = title;
+
+    const book = await Book.findOne({ where: { title: oldTitle } });
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    if (newTitle) book.title = newTitle;
+
+    if (author) {
+      const [oldAuthor, newAuthor] = author;
+      book.author = newAuthor;
+    }
+
+    if (genre) {
+      const [oldGenre, newGenre] = genre;
+      book.genre = newGenre;
+    }
+
+    await book.save();
+
+    res.status(200).json({ message: "Book updated!", book });
+  } catch (error) {
+    res.status(501).json({ message: error.message, error: error });
+  }
+};
 
 const deleteBook = async (req, res) => {
   const { title } = req.body;
@@ -56,17 +86,18 @@ const deleteBook = async (req, res) => {
     });
 
     if (!deleted) {
-      return res.status(404).json({message : "Book not found"})
-    } 
+      return res.status(404).json({ message: "Book not found" });
+    }
 
-    res.status(200).json({message: `${title} has been deleted`})
+    res.status(200).json({ message: `${title} has been deleted` });
   } catch (error) {
-     res.status(501).json({ message: error.message, error: error });
+    res.status(501).json({ message: error.message, error: error });
   }
 };
 
 module.exports = {
   addBook: addBook,
   getAllBooks: getAllBooks,
-  deleteBook: deleteBook
+  deleteBook: deleteBook,
+  dynamicUpdate: dynamicUpdate,
 };
