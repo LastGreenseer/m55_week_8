@@ -27,26 +27,17 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-// const getAllByAuthor = async (req, res) => {
-//     const { author } = req.body;
+const getBooksByAuthor = async (req, res) => {
+    
+}
 
-//     try {
-//         const books = await Book.findAll({
-//             where: {author: author},
-//         });
-
-//         if (books.length > 0) {
-//             res.status(201).json({ message: "success", books: books });
-//         }
-//     }
-// }
-
+//Find a book by its title and dynamically update its key values
 const dynamicUpdate = async (req, res) => {
   const { title, author, genre } = req.body;
 
   try {
     if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+      return res.status(400).json({ message: "A title is required" });
     }
 
     const [oldTitle, newTitle] = title;
@@ -77,6 +68,7 @@ const dynamicUpdate = async (req, res) => {
   }
 };
 
+//Delete a book by its title
 const deleteBook = async (req, res) => {
   const { title } = req.body;
 
@@ -95,9 +87,22 @@ const deleteBook = async (req, res) => {
   }
 };
 
+const getOneByTitle = async (req, res)  => {
+  const title = req.params.title;
+
+  
+    const book = await Book.findOne({where: {title: title} })
+
+    
+  res.status(200).json({message: "book found", book:book})
+  }
+
+
 module.exports = {
   addBook: addBook,
   getAllBooks: getAllBooks,
   deleteBook: deleteBook,
   dynamicUpdate: dynamicUpdate,
+  getBooksByAuthor: getBooksByAuthor,
+  getOneByTitle: getOneByTitle,
 };
