@@ -62,7 +62,7 @@ const dynamicUpdate = async (req, res) => {
 
     await book.save();
 
-    res.status(200).json({ message: "Book updated!", book });
+    res.status(200).json({ message: "success", book });
   } catch (error) {
     res.status(501).json({ message: error.message, error: error });
   }
@@ -81,7 +81,7 @@ const deleteBook = async (req, res) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    res.status(200).json({ message: `${title} has been deleted` });
+    res.status(200).json({ message: "success" });
   } catch (error) {
     res.status(501).json({ message: error.message, error: error });
   }
@@ -94,7 +94,7 @@ const getOneByTitle = async (req, res)  => {
     const book = await Book.findOne({where: {title: title} })
 
     
-  res.status(200).json({message: "book found", book:book})
+  res.status(200).json({message: "Success", book:book})
   }
 
 

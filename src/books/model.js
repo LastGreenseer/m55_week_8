@@ -20,7 +20,6 @@ const Book = sequelize.define(
       defaultValue: "some genre",
     },
   },
-  { timestamps: false }
 );
 
 module.exports = Book;
