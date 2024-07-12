@@ -98,6 +98,25 @@ const getOneByTitle = async (req, res)  => {
   }
 
 
+  const getOneByAuthor = async (req, res) => {
+    const authorName = req.params.author;
+
+    try {
+      const author = await Author.findOne({
+        where: { authorName: authorName },
+        include: Book,
+      });
+
+      if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+      }
+
+      res.status(200).json({ message: "Success", author: author });
+    } catch (error) {
+      res.status(501).json({ message: error.message, error: error });
+    }
+  };
+
 module.exports = {
   addBook: addBook,
   getAllBooks: getAllBooks,
@@ -105,4 +124,5 @@ module.exports = {
   dynamicUpdate: dynamicUpdate,
   getBooksByAuthor: getBooksByAuthor,
   getOneByTitle: getOneByTitle,
+  getOneByAuthor: getOneByAuthor,
 };

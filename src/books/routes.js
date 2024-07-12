@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const bookRouter = Router();
 
-const { addBook, getAllBooks, deleteBook, dynamicUpdate, getOneByTitle } = require("./controllers");
+const { addBook, getAllBooks, deleteBook, dynamicUpdate, getOneByTitle, getOneByAuthor } = require("./controllers");
 
 // http://localhost:5001/books/test
 bookRouter.get("/test", async (req, res) => {
@@ -24,6 +24,6 @@ bookRouter.put("/dynamicUpdate", dynamicUpdate)
 
 bookRouter.get("/getOneByTitle/:title", getOneByTitle  )
 
-
+bookRouter.get("/getOneByAuthor/:author", getOneByAuthor );
 
 module.exports = bookRouter;
