@@ -32,5 +32,5 @@ const getOneByAuthor = async (req, res) => {
 
 module.exports = {
   addAuthor: addAuthor,
-  getAuthorAndBooks: getAuthorAndBooks,
+  getOneByAuthor: getOneByAuthor,
 };
