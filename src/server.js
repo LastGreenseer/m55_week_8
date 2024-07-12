@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const { Sequelize } = require("sequelize");
 
 const port = process.env.PORT || 5001;
 
@@ -16,16 +17,32 @@ app.use(express.json());
 app.use("/books", bookRouter);
 app.use("/authors", authorRouter);
 
-const syncTables = () => {
+const sequelize = new Sequelize(process.env.MYSQL_URI, {
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
+
+const syncTables = async () => {
   // Model.sync({alter: true})
+  try {
+    await sequelize.authenticate();
+    console.log("Database connected...");
 
-  Author.hasMany(Book);
-  Book.belongsTo(Author);
+    Author.hasMany(Book, { foreignKey: "authorId" });
+    Book.belongsTo(Author, { foreignKey: "authorId" });
 
-  Book.sync({ alter: true });
-  Author.sync({ alter: true });
+    await Author.sync({ alter: true });
+    await Book.sync({ alter: true });
+
+    console.log("Models synchronized...");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 };
-
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "API is healthy" });
 });

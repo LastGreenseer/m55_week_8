@@ -1,3 +1,4 @@
+const Author = require("../authors/model");
 const Book = require("./model");
 
 const addBook = async (req, res) => {
@@ -27,9 +28,7 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-const getBooksByAuthor = async (req, res) => {
-    
-}
+const getBooksByAuthor = async (req, res) => {};
 
 //Find a book by its title and dynamically update its key values
 const dynamicUpdate = async (req, res) => {
@@ -87,16 +86,32 @@ const deleteBook = async (req, res) => {
   }
 };
 
-const getOneByTitle = async (req, res)  => {
+const getOneByTitle = async (req, res) => {
   const title = req.params.title;
 
-  
-    const book = await Book.findOne({where: {title: title} })
+  const book = await Book.findOne({ where: { title: title } });
 
-    
-  res.status(200).json({message: "Success", book:book})
+  res.status(200).json({ message: "Success", book: book });
+};
+
+const getOneByAuthor = async (req, res) => {
+  const authorName = req.params.author;
+
+  try {
+    const author = await Author.findOne({
+      where: { authorName: authorName },
+      include: Book,
+    });
+
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+    res.status(200).json({ message: "Success", author: author });
+  } catch (error) {
+    res.status(501).json({ message: error.message, error: error });
   }
-
+};
 
 module.exports = {
   addBook: addBook,
@@ -105,4 +120,5 @@ module.exports = {
   dynamicUpdate: dynamicUpdate,
   getBooksByAuthor: getBooksByAuthor,
   getOneByTitle: getOneByTitle,
+  getOneByAuthor: getOneByAuthor,
 };
