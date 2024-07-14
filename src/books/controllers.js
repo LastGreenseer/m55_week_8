@@ -27,7 +27,7 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-const getBooksByAuthor = async (req, res) => {};
+// const getBooksByAuthor = async (req, res) => {};
 
 //Find a book by its title and dynamically update its key values
 const dynamicUpdate = async (req, res) => {
@@ -79,7 +79,7 @@ const deleteBook = async (req, res) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    res.status(200).json({ message: `${title} has been deleted` });
+    res.status(200).json({ message: 'success' });
   } catch (error) {
     res.status(501).json({ message: error.message, error: error });
   }
