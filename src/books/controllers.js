@@ -131,7 +131,6 @@ module.exports = {
   deleteBook: deleteBook,
   deleteAllBooks: deleteAllBooks,
   dynamicUpdate: dynamicUpdate,
-  getBooksByAuthor: getBooksByAuthor,
   getOneByTitle: getOneByTitle,
   getOneByAuthor: getOneByAuthor,
 };
