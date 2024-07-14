@@ -27,9 +27,7 @@ const getAllBooks = async (req, res) => {
   }
 };
 
-const getBooksByAuthor = async (req, res) => {
-    
-}
+const getBooksByAuthor = async (req, res) => {};
 
 //Find a book by its title and dynamically update its key values
 const dynamicUpdate = async (req, res) => {
@@ -87,39 +85,51 @@ const deleteBook = async (req, res) => {
   }
 };
 
-const getOneByTitle = async (req, res)  => {
+//Delete all books
+const deleteAllBooks = async (reg, res) => {
+  try {
+    await Book.destroy({
+      where: {},
+      truncate: true,
+    });
+
+    res.status(200).json({ message: "success" });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error: error });
+  }
+};
+
+const getOneByTitle = async (req, res) => {
   const title = req.params.title;
 
-  
-    const book = await Book.findOne({where: {title: title} })
+  const book = await Book.findOne({ where: { title: title } });
 
-    
-  res.status(200).json({message: "book found", book:book})
-  }
+  res.status(200).json({ message: "book found", book: book });
+};
 
+const getOneByAuthor = async (req, res) => {
+  const authorName = req.params.author;
 
-  const getOneByAuthor = async (req, res) => {
-    const authorName = req.params.author;
+  try {
+    const author = await Book.findOne({
+      where: { author: authorName },
+    });
 
-    try {
-      const author = await Book.findOne({
-        where: { author: authorName },
-      });
-
-      if (!author) {
-        return res.status(404).json({ message: "Author not found" });
-      }
-
-      res.status(200).json({ message: "Success", author: author });
-    } catch (error) {
-      res.status(501).json({ message: error.message, error: error });
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
     }
-  };
+
+    res.status(200).json({ message: "Success", author: author });
+  } catch (error) {
+    res.status(501).json({ message: error.message, error: error });
+  }
+};
 
 module.exports = {
   addBook: addBook,
   getAllBooks: getAllBooks,
   deleteBook: deleteBook,
+  deleteAllBooks: deleteAllBooks,
   dynamicUpdate: dynamicUpdate,
   getBooksByAuthor: getBooksByAuthor,
   getOneByTitle: getOneByTitle,
