@@ -3,8 +3,9 @@ const express = require("express");
 
 const port = process.env.PORT || 5001;
 
-const Book = require("./books/model");
-const Author = require("./authors/model");
+// const Book = require("./books/model");
+// const Author = require("./authors/model");
+const {Book, Author} = require ("./db/associations")
 
 const bookRouter = require("./books/routes");
 const authorRouter = require("./authors/routes");
