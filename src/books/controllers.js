@@ -102,9 +102,8 @@ const getOneByTitle = async (req, res)  => {
     const authorName = req.params.author;
 
     try {
-      const author = await Author.findOne({
-        where: { authorName: authorName },
-        include: Book,
+      const author = await Book.findOne({
+        where: { author: authorName },
       });
 
       if (!author) {
